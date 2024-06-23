@@ -1,0 +1,9 @@
+How to create Inituial DBase
+1.)Open Package Manager Console
+2.) dotnet ef migrations add InitialDatabase --project IMS.Web
+
+Upgrade EF Tool version issue is encountered
+dotnet tool update --global dotnet-ef
+
+Windows User ConnectionString (appsettings.json)
+"InventoryConnectionString": "Server=THEREALUSER;Database=InventoryDB;TrustServerCertificate=True;Trusted_Connection=True"
