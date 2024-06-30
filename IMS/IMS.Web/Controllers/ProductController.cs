@@ -35,9 +35,15 @@ namespace IMS.Web.Controllers
         }
 
         // GET: ProductController/Create
-        public ActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var products = await _productServices.GetAllProducts();
+
+            var vm = new ProductViewModel();
+
+            vm.Products = products;
+
+            return View(vm);
         }
 
         // POST: ProductController/Create

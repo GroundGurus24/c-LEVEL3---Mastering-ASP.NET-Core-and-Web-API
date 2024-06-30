@@ -67,9 +67,9 @@ namespace IMS.Web.Controllers
         {
             return View();
         }
-        
-        [HttpPost]
+
         [AllowAnonymous]
+        [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)

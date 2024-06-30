@@ -83,7 +83,7 @@ var svgIconConfig = {
 		]
 	},
 	maximizeRotate : { 
-		url : 'assets/fonts/animatedsvgicons/svg/maximize.svg',
+		url : '/assets/fonts/animatedsvgicons/svg/maximize.svg',
 		animation : [
 			{ 
 				el : 'path:nth-child(1)', 
