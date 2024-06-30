@@ -22,11 +22,14 @@ namespace IMS.Web.API
             _configuration = configuration;
         }
         // GET: api/<AuthenticationController>
-        [Authorize]
+        
         [HttpGet]
+        [Authorize]
+        //[Authorize]
         public IEnumerable<string> Get()
         {
-            return new string[] { "jok", "admin@12345" };
+
+            return new string[] { "jo", "admin@12345" };
         }
 
         // GET api/<AuthenticationController>/5

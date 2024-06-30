@@ -28,12 +28,6 @@ namespace IMS.Web.Controllers
             return View(vm);
         }
 
-        // GET: ProductController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
         // GET: ProductController/Create
         public async Task<IActionResult> Create()
         {
@@ -62,8 +56,11 @@ namespace IMS.Web.Controllers
         }
 
         // GET: ProductController/Edit/5
-        public ActionResult Edit(int id)
+        [HttpGet]
+        public ActionResult Edit(int Id, string Name)
         {
+            TempData["id"] = Id;
+            TempData["name"] = Name;
             return View();
         }
 

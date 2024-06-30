@@ -5,9 +5,11 @@ using IMS.Web.Repository.Interfaces;
 using IMS.Web.Services;
 using IMS.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using System.Text;
 
 
@@ -16,6 +18,9 @@ var config = builder.Configuration;
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+//
+
 
 //SQL Server Database Configuration
 builder.Services.AddDbContext<InventoryDbContext>(options =>
@@ -42,6 +47,24 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+//AddAuthorization
+builder.Services.AddAuthorization(options =>
+{
+    options.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme).RequireAuthenticatedUser().Build();
+    
+    //Get Role from Claim
+    options.AddPolicy("AdminOnly", policy => policy.RequireClaim("Role", "Admin"));
+
+    //
+    options.AddPolicy("AdminClaim", policy =>
+        {
+            policy.RequireAssertion(context => context.User.HasClaim(c => c.Type == ClaimTypes.Role));
+        });
+
+ });
+    
+
+
 //Identity User / Role
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<InventoryDbContext>()
@@ -51,6 +74,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
 
+
+builder.Services.AddControllers();
 
 //App Build
 var app = builder.Build();
@@ -76,14 +101,24 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
-app.UseAuthorization();
 
 app.UseStaticFiles();
 
+
 app.UseRouting();
+
+//Should be added after app.UseRouting();
+app.UseAuthorization();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Account}/{action=Login}/{id?}");
+
+
 
 app.Run();
